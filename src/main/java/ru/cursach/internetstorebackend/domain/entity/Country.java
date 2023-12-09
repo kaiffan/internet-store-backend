@@ -1,4 +1,4 @@
-package ru.cursach.internetstorebackend.model;
+package ru.cursach.internetstorebackend.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

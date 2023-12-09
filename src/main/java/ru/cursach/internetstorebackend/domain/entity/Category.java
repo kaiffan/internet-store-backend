@@ -1,16 +1,18 @@
-package ru.cursach.internetstorebackend.model;
+package ru.cursach.internetstorebackend.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.cursach.internetstorebackend.annotation.Table;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+@Table(name = "category")
+public class Category extends Entity{
     private Integer id;
     private String title;
-    private Category id_parent_category;
+    private Integer id_parent_category;
 }

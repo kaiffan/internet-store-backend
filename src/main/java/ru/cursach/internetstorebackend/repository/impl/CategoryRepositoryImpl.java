@@ -1,46 +1,45 @@
 package ru.cursach.internetstorebackend.repository.impl;
 
-import org.noear.weed.DbContext;
+import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
-import ru.cursach.internetstorebackend.annotation.Table;
 import ru.cursach.internetstorebackend.domain.dto.CatalogueDTO;
 import ru.cursach.internetstorebackend.domain.entity.Category;
-import ru.cursach.internetstorebackend.domain.entity.Subcategory;
-import ru.cursach.internetstorebackend.repository.BaseWeed3Repository;
+import ru.cursach.internetstorebackend.repository.BaseJDBCTemplateRepository;
 import ru.cursach.internetstorebackend.repository.interfaces.CategoryRepository;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Repository
-public class CategoryRepositoryImpl extends BaseWeed3Repository<Category> implements CategoryRepository {
-    public CategoryRepositoryImpl(DbContext dbContext) {
-        super(dbContext, Category.class);
+public class CategoryRepositoryImpl extends BaseJDBCTemplateRepository<Category> implements CategoryRepository {
+    public CategoryRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        super(jdbcTemplate, Category.class);
     }
 
     @Override
     public List<Category> getAllCategories() {
-        try {
-            return db.table(tableName).select("*").getList(Category.class);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return null;
     }
 
     @Override
     public List<CatalogueDTO> getAllCategoriesWithSubcategories() {
-        try {
+//        String sql = "SELECT category.id, category.title, " +
+//                        "subcategory.id AS subcategories_id, subcategory.title AS subcategories_title " +
+//                        "FROM category " +
+//                        "LEFT JOIN subcategory ON subcategory.parent_category = category.id " +
+//                        "ORDER BY id";
 
-            String subcategoryTbName = Subcategory.class.getAnnotation(Table.class).name();
+        String sql = "SELECT c1.id, c1.title, " +
+                        "c2.id AS subcategories_id, c2.title AS subcategories_title " +
+                        "FROM category c1 " +
+                        "INNER JOIN category c2 ON c2.parent_category = c1.id ";
 
-            var query = db.table(tableName)
-                    .leftJoin(subcategoryTbName).on(tableName + ".id = " + subcategoryTbName + ".parent_category")
-                    .select("*");
+        ResultSetExtractor<List<CatalogueDTO>> extractor = JdbcTemplateMapperFactory
+                .newInstance()
+                .addKeys("id", "subcategories_id")
+                .newResultSetExtractor(CatalogueDTO.class);
 
-            return query.getList(CatalogueDTO.class);
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return jdbcTemplate.query(sql, extractor);
     }
 }

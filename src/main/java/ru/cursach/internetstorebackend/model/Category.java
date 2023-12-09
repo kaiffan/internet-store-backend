@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -14,5 +12,5 @@ import java.util.List;
 public class Category {
     private Integer id;
     private String title;
-    private List<Category> id_parent_category;
+    private Category id_parent_category;
 }

@@ -8,7 +8,6 @@ import javax.sql.DataSource;
 
 @Configuration
 public class SpringJdbcConfig {
-
     @Bean
     public NamedParameterJdbcTemplate template(DataSource dataSource){
         return new NamedParameterJdbcTemplate(dataSource);

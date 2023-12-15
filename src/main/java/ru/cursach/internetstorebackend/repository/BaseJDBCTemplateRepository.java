@@ -8,7 +8,7 @@ public abstract class BaseJDBCTemplateRepository<TEntity extends Entity> {
     protected JdbcTemplate jdbcTemplate;
     protected String tableName;
 
-    public BaseJDBCTemplateRepository(JdbcTemplate jdbcTemplate, Class<TEntity> entityClass){
+    public BaseJDBCTemplateRepository(JdbcTemplate jdbcTemplate, Class<TEntity> entityClass) {
         this.jdbcTemplate = jdbcTemplate;
         tableName = entityClass.getAnnotation(Table.class).name();
     }

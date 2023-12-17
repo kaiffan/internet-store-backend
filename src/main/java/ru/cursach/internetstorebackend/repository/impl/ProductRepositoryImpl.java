@@ -10,6 +10,7 @@ import ru.cursach.internetstorebackend.repository.BaseJDBCTemplateRepository;
 import ru.cursach.internetstorebackend.repository.interfaces.ProductRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> implements ProductRepository {
@@ -19,10 +20,11 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
 
     @Override
     public List<ProductShortDTO> getAllProductShortDTOBySubcategory(int idSubcategory, int limit, int offset) {
-        String sql = "select code_product, name, description, image, raiting, 200 as price_price" +
+        String sql = "select code_product, name, description, image, raiting, " +
+                "(product_price(code_product, CURRENT_DATE)).price as price" +
                 " from product " +
                 " where product.id_subcategory = " + idSubcategory;
-        //TODO:неправильный вариант, надо обдумать, ошибка с price_price
+
 
         ResultSetExtractor<List<ProductShortDTO>> mapper = JdbcTemplateMapperFactory
                 .newInstance()

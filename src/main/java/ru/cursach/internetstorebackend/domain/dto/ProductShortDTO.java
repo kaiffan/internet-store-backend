@@ -14,5 +14,5 @@ public class ProductShortDTO {
     private String description;
     private String image;
     private double raiting;
-    private double price;
+    private Double price;
 }

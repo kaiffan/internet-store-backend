@@ -1,4 +1,4 @@
-package ru.cursach.internetstorebackend.services;
+package ru.cursach.internetstorebackend.services.file;
 
 import com.github.sardine.Sardine;
 import com.github.sardine.SardineFactory;

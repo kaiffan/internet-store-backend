@@ -3,7 +3,7 @@ package ru.cursach.internetstorebackend.services;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.cursach.internetstorebackend.domain.dto.CatalogueDTO;
-import ru.cursach.internetstorebackend.domain.dto.ProductShortDTO;
+import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductShortDTO;
 import ru.cursach.internetstorebackend.domain.dto.SubcategoryWithProductsDTO;
 import ru.cursach.internetstorebackend.exceptions.NotFoundException;
 import ru.cursach.internetstorebackend.repository.interfaces.CategoryRepository;

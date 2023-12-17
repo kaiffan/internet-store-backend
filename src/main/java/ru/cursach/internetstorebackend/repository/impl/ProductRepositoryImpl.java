@@ -4,13 +4,14 @@ import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
-import ru.cursach.internetstorebackend.domain.dto.ProductShortDTO;
+import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductDTO;
+import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductForUpdateRowDTO;
+import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductShortDTO;
 import ru.cursach.internetstorebackend.domain.entity.Product;
 import ru.cursach.internetstorebackend.repository.BaseJDBCTemplateRepository;
 import ru.cursach.internetstorebackend.repository.interfaces.ProductRepository;
 
 import java.util.List;
-import java.util.UUID;
 
 @Repository
 public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> implements ProductRepository {
@@ -23,12 +24,80 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
         String sql = "select code_product, name, description, image, raiting, " +
                 "(product_price(code_product, CURRENT_DATE)).price as price" +
                 " from product " +
-                " where product.id_subcategory = " + idSubcategory;
+                " where product.id_subcategory = " + idSubcategory +
+                " limit " + limit +
+                " offset " + offset;
 
 
         ResultSetExtractor<List<ProductShortDTO>> mapper = JdbcTemplateMapperFactory
                 .newInstance()
                 .newResultSetExtractor(ProductShortDTO.class);
         return jdbcTemplate.query(sql, mapper);
+    }
+
+    @Override
+    public List<ProductDTO> getProductByCodeProduct(String codeProduct) {
+        String sql = " select product.code_product, " +
+                "       product.name, " +
+                "       product.description, " +
+                "       product.image, " +
+                "       product.model, " +
+                "       product.code_manufacturer, " +
+                "       product.warranty, " +
+                "       product.raiting, " +
+                "       country.name as country," +
+                "       manufacturer.name as manufacturer," +
+                "       dimensions.length as dimensions_length, " +
+                "       dimensions.width as dimensions_width, " +
+                "       dimensions.height as dimensions_height, " +
+                "       dimensions.weight as dimensions_weight " +
+                "from product " +
+                "         join country on product.id_country = country.id " +
+                "         join manufacturer on product.id_manufacturer = manufacturer.id " +
+                "        join dimensions on product.id_dimensions = dimensions.id " +
+                "where product.code_product = "+ "\'" + codeProduct + "\'";
+
+
+        ResultSetExtractor<List<ProductDTO>> mapper = JdbcTemplateMapperFactory
+                .newInstance()
+                .newResultSetExtractor(ProductDTO.class);
+        return jdbcTemplate.query(sql, mapper);
+    }
+
+    @Override
+    public int deleteProductByCodeProduct(String codeProduct) {
+        String sql = "update product " +
+                " set deleted = true " +
+                " where code_product = " + "\'" + codeProduct + "\'";
+        return jdbcTemplate.update(sql);
+    }
+
+    @Override
+    public int updateProductByCodeProduct(String codeProduct, ProductForUpdateRowDTO product) {
+        String sql = " update product " +
+                " set name              = ?, " +
+                "    description       = ?, " +
+                "    model             = ?, " +
+                "    image             = ?, " +
+                "    code_manufacturer = ?, " +
+                "    warranty          = ?, " +
+                "    raiting           = ?, " +
+                "    id_country        = ?, " +
+                "    id_manufacturer   = ?, " +
+                "    id_subcategory    = ?, " +
+                "    id_dimensions     = ? " +
+                "where code_product = " + "\'" + codeProduct + "\'";
+        return jdbcTemplate.update(sql,
+                product.getName(),
+                product.getDescription(),
+                product.getModel(),
+                product.getImage(),
+                product.getCode_manufacturer(),
+                product.getWarranty(),
+                product.getRaiting(),
+                product.getCountry(),
+                product.getManufacturer(),
+                product.getSubcategory(),
+                product.getDimensions());
     }
 }

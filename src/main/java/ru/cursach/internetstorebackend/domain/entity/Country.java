@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.cursach.internetstorebackend.annotation.Table;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Country {
+@Table(name = "country")
+public class Country extends Entity {
     private Integer id;
     private String name;
 }

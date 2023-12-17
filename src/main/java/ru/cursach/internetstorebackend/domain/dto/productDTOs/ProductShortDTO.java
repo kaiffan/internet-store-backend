@@ -1,4 +1,4 @@
-package ru.cursach.internetstorebackend.domain.dto;
+package ru.cursach.internetstorebackend.domain.dto.productDTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

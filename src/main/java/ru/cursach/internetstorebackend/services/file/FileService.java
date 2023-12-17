@@ -1,4 +1,4 @@
-package ru.cursach.internetstorebackend.services;
+package ru.cursach.internetstorebackend.services.file;
 
 import org.springframework.web.multipart.MultipartFile;
 

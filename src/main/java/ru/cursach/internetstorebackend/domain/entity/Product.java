@@ -26,4 +26,5 @@ public class Product extends Entity {
     private Subcategory subcategory;
     private Manufacturer manufacturer;
     private Dimensions dimensions;
+    private Boolean deleted;
 }

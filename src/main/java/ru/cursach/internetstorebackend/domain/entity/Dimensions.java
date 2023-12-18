@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "dimensions")
-public class Dimensions {
+public class Dimensions extends Entity {
     private UUID id;
     private Integer length;
     private Integer width;

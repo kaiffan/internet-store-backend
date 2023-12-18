@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import ru.cursach.internetstorebackend.domain.dto.CatalogueDTO;
+import ru.cursach.internetstorebackend.domain.dto.request.ProductCreateDTO;
 import ru.cursach.internetstorebackend.domain.entity.Category;
 import ru.cursach.internetstorebackend.domain.entity.Subcategory;
 import ru.cursach.internetstorebackend.repository.BaseJDBCTemplateRepository;
@@ -14,6 +15,7 @@ import ru.cursach.internetstorebackend.repository.interfaces.CategoryRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class CategoryRepositoryImpl extends BaseJDBCTemplateRepository<Category> implements CategoryRepository {
@@ -24,10 +26,10 @@ public class CategoryRepositoryImpl extends BaseJDBCTemplateRepository<Category>
     @Override
     public List<CatalogueDTO> getAllCategoriesWithSubcategories() {
         String sql = "SELECT category.id, category.title, " +
-                        "subcategory.id AS subcategories_id, subcategory.title AS subcategories_title " +
-                        "FROM category " +
-                        "LEFT JOIN subcategory ON subcategory.parent_category = category.id " +
-                        "ORDER BY id";
+                "subcategory.id AS subcategories_id, subcategory.title AS subcategories_title " +
+                "FROM category " +
+                "LEFT JOIN subcategory ON subcategory.parent_category = category.id " +
+                "ORDER BY id";
 
 //        String sql = "SELECT c1.id, c1.title, " +
 //                        "c2.id AS subcategories_id, c2.title AS subcategories_title " +
@@ -44,7 +46,9 @@ public class CategoryRepositoryImpl extends BaseJDBCTemplateRepository<Category>
 
     @Nullable
     @Override
-    public Optional<String> getTitleById(int idSubcategory) {
+    public Optional<String> getTitleById(
+            int idSubcategory
+    ) {
         String sql = "select title from subcategory where id = " + idSubcategory;
         RowMapper<Subcategory> mapper = JdbcTemplateMapperFactory.newInstance().newRowMapper(Subcategory.class);
         List<Subcategory> subcategoryList = jdbcTemplate.query(sql, mapper);
@@ -52,6 +56,32 @@ public class CategoryRepositoryImpl extends BaseJDBCTemplateRepository<Category>
             return Optional.of(subcategoryList.get(0).getTitle());
         }
         return Optional.empty();
+    }
+
+    @Override
+    public UUID insertNewProductInSubCategory(
+            int idSubcategory,
+            ProductCreateDTO productCreateDTO,
+            UUID idDimensions
+    ) {
+        UUID codeProduct = UUID.randomUUID();
+        String sql = "insert into product" +
+                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql,
+                codeProduct,
+                productCreateDTO.getName(),
+                productCreateDTO.getDescription(),
+                productCreateDTO.getImage(),
+                productCreateDTO.getModel(),
+                productCreateDTO.getCode_manufacturer(),
+                productCreateDTO.getWarranty(),
+                productCreateDTO.getIdCountry(),
+                idSubcategory,
+                productCreateDTO.getManufacturer(),
+                idDimensions,
+                productCreateDTO.getRaiting()
+        );
+        return codeProduct;
     }
 
 

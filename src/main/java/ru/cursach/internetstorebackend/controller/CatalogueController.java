@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.cursach.internetstorebackend.domain.dto.CatalogueDTO;
 import ru.cursach.internetstorebackend.domain.dto.SubcategoryWithProductsDTO;
+import ru.cursach.internetstorebackend.domain.dto.request.ProductCreateDTO;
 import ru.cursach.internetstorebackend.domain.entity.Product;
 import ru.cursach.internetstorebackend.exceptions.NotFoundException;
 import ru.cursach.internetstorebackend.services.CatalogueService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
@@ -38,11 +40,20 @@ public class CatalogueController {
     public SubcategoryWithProductsDTO getProductsInSubcategory(
             @PathVariable String idSubcategory,
             @RequestParam(name = "limit") int limit,
-            @RequestParam(name = "offset") int offset) {
+            @RequestParam(name = "offset") int offset
+    ) {
         try {
             return catalogueController.getSubcategoryWithProductsDTO(Integer.parseInt(idSubcategory), limit, offset);
         } catch (NotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @PostMapping("/{idSubcategory}")
+    public UUID insertProductBySubcategory(
+            @PathVariable int idSubcategory,
+            @RequestBody ProductCreateDTO productCreateDTO
+    ) {
+        return catalogueController.insertProductBySubcategory(idSubcategory, productCreateDTO);
     }
 }

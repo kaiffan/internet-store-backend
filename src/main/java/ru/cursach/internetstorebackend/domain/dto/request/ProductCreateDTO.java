@@ -1,7 +1,7 @@
 package ru.cursach.internetstorebackend.domain.dto.request;
 
 import lombok.Data;
-import ru.cursach.internetstorebackend.domain.dto.CharacteristicDTO;
+import ru.cursach.internetstorebackend.domain.dto.characteristic.CharacteristicDTO;
 import ru.cursach.internetstorebackend.domain.dto.DimensionsDTO;
 import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductDTOBase;
 

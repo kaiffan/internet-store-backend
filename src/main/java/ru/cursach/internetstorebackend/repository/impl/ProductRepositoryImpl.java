@@ -55,7 +55,7 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
                 "         join country on product.id_country = country.id " +
                 "         join manufacturer on product.id_manufacturer = manufacturer.id " +
                 "        join dimensions on product.id_dimensions = dimensions.id " +
-                "where product.code_product = "+ "\'" + codeProduct + "\'";
+                "where product.code_product = "+ "'" + codeProduct + "'";
 
 
         ResultSetExtractor<List<ProductDTO>> mapper = JdbcTemplateMapperFactory
@@ -68,7 +68,7 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
     public int deleteProductByCodeProduct(String codeProduct) {
         String sql = "update product " +
                 " set deleted = true " +
-                " where code_product = " + "\'" + codeProduct + "\'";
+                " where code_product = " + "'" + codeProduct + "'";
         return jdbcTemplate.update(sql);
     }
 
@@ -86,7 +86,7 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
                 "    id_manufacturer   = ?, " +
                 "    id_subcategory    = ?, " +
                 "    id_dimensions     = ? " +
-                "where code_product = " + "\'" + codeProduct + "\'";
+                "where code_product = " + "'" + codeProduct + "'";
         return jdbcTemplate.update(sql,
                 product.getName(),
                 product.getDescription(),

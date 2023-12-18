@@ -39,8 +39,8 @@ public class CatalogueController {
     @GetMapping("/{idSubcategory}/")
     public SubcategoryWithProductsDTO getProductsInSubcategory(
             @PathVariable String idSubcategory,
-            @RequestParam(name = "limit") int limit,
-            @RequestParam(name = "offset") int offset
+            @RequestParam(name = "limit", required = false) int limit,
+            @RequestParam(name = "offset", required = false) int offset
     ) {
         try {
             return catalogueController.getSubcategoryWithProductsDTO(Integer.parseInt(idSubcategory), limit, offset);

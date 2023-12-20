@@ -4,13 +4,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.cursach.internetstorebackend.constants.RequestConstant;
 import ru.cursach.internetstorebackend.domain.entity.Country;
 import ru.cursach.internetstorebackend.services.CountryService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/country")
+@RequestMapping(RequestConstant.country)
 @AllArgsConstructor
 public class CountryController {
     CountryService countryService;

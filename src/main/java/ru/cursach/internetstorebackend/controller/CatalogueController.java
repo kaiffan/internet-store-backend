@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.cursach.internetstorebackend.constants.CatalogueControllerConstant;
+import ru.cursach.internetstorebackend.constants.RequestConstant;
 import ru.cursach.internetstorebackend.domain.dto.CatalogueDTO;
 import ru.cursach.internetstorebackend.domain.dto.SubcategoryWithProductsDTO;
 import ru.cursach.internetstorebackend.domain.dto.request.ProductCreateDTO;
@@ -20,7 +22,7 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/catalog/")
+@RequestMapping(RequestConstant.catalogue)
 public class CatalogueController {
 //    CategoryRepository categoryRepository;
 //
@@ -36,7 +38,7 @@ public class CatalogueController {
         return catalogueController.getCatalogue();
     }
 
-    @GetMapping("/{idSubcategory}/")
+    @GetMapping(CatalogueControllerConstant.pathParamIdSubcategory)
     public SubcategoryWithProductsDTO getProductsInSubcategory(
             @PathVariable String idSubcategory,
             @RequestParam(name = "limit", required = false) int limit,
@@ -49,7 +51,7 @@ public class CatalogueController {
         }
     }
 
-    @PostMapping("/{idSubcategory}")
+    @PostMapping(CatalogueControllerConstant.pathParamIdSubcategory)
     public UUID insertProductBySubcategory(
             @PathVariable int idSubcategory,
             @RequestBody ProductCreateDTO productCreateDTO

@@ -1,13 +1,7 @@
 package ru.cursach.internetstorebackend.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.cursach.internetstorebackend.constants.CatalogueControllerConstant;
 import ru.cursach.internetstorebackend.constants.RequestConstant;
 import ru.cursach.internetstorebackend.domain.dto.CatalogueDTO;
@@ -22,6 +16,7 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin
 @RequestMapping(RequestConstant.catalogue)
 public class CatalogueController {
 //    CategoryRepository categoryRepository;

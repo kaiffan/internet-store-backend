@@ -7,12 +7,6 @@ import ru.cursach.internetstorebackend.domain.entity.Price;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
-public class ProductShortDTO {
-    private UUID code_product;
-    private String name;
-    private String description;
-    private String image;
-    private double raiting;
+public class ProductShortDTO extends ProductDTOBaseWithCode {
     private Double price;
 }

@@ -6,6 +6,8 @@ import ru.cursach.internetstorebackend.constants.ProductControllerConstant;
 import ru.cursach.internetstorebackend.constants.RequestConstant;
 import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductDTO;
 import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductForUpdateRowDTO;
+import ru.cursach.internetstorebackend.domain.dto.request.ProductCreateDTO;
+import ru.cursach.internetstorebackend.domain.dto.request.ProductUpdateRequest;
 import ru.cursach.internetstorebackend.exceptions.NotFoundException;
 import ru.cursach.internetstorebackend.services.ProductService;
 
@@ -24,6 +26,13 @@ public class ProductController {
         return productService.getProductByCodeProduct(codeProduct);
     }
 
+    @GetMapping(ProductControllerConstant.pathParamCodeProductEdit)
+    public ProductCreateDTO getEditProductByCodeProduct(
+            @PathVariable String codeProduct
+    ) throws NotFoundException {
+        return productService.getProductByCodeProductWithForeignKeys(codeProduct);
+    }
+
     @DeleteMapping(ProductControllerConstant.pathParamCodeProduct)
     public int deleteProductByCodeProduct(
             @PathVariable String codeProduct
@@ -34,7 +43,7 @@ public class ProductController {
     @PutMapping(ProductControllerConstant.pathParamCodeProduct)
     public int updateProductByCodeProduct(
             @PathVariable String codeProduct,
-            @RequestBody ProductForUpdateRowDTO product) {
+            @RequestBody ProductUpdateRequest product) {
         return productService.updateProductByCodeProduct(codeProduct, product);
     }
 }

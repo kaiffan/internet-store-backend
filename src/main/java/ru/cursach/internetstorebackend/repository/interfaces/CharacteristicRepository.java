@@ -17,6 +17,10 @@ public interface CharacteristicRepository {
 
     List<CharacteristicProductDTO> getAllTypeFeatureByProductCode(String codeProduct);
 
+    List<CharacteristicDTO> getAllTypeFeatureWithIDByProductCode(
+            String codeProduct
+    );
+
     List<ReferenceValueForArrayDTO> getAllReferenceValueByTypeFeature(int typeFeature);
 
     ReferenceValueDTO getNameTypeFeature(int typeFeature);

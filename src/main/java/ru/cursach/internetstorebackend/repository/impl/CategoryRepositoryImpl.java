@@ -77,7 +77,7 @@ public class CategoryRepositoryImpl extends BaseJDBCTemplateRepository<Category>
                 productCreateDTO.getWarranty(),
                 productCreateDTO.getIdCountry(),
                 idSubcategory,
-                productCreateDTO.getManufacturer(),
+                productCreateDTO.getIdManufacturer(),
                 idDimensions,
                 productCreateDTO.getRaiting()
         );

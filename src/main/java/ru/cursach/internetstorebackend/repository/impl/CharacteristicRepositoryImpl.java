@@ -10,13 +10,11 @@ import ru.cursach.internetstorebackend.domain.dto.characteristic.CharacteristicP
 import ru.cursach.internetstorebackend.domain.dto.referenceValue.ReferenceValueDTO;
 import ru.cursach.internetstorebackend.domain.dto.referenceValue.ReferenceValueForArrayDTO;
 import ru.cursach.internetstorebackend.domain.entity.Characteristic;
-import ru.cursach.internetstorebackend.domain.entity.Subcategory;
 import ru.cursach.internetstorebackend.domain.entity.TypeFeature;
 import ru.cursach.internetstorebackend.repository.BaseJDBCTemplateRepository;
 import ru.cursach.internetstorebackend.repository.interfaces.CharacteristicRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -68,6 +66,21 @@ public class CharacteristicRepositoryImpl extends BaseJDBCTemplateRepository<Cha
         ResultSetExtractor<List<CharacteristicProductDTO>> mapper = JdbcTemplateMapperFactory
                 .newInstance()
                 .newResultSetExtractor(CharacteristicProductDTO.class);
+        return jdbcTemplate.query(sql, mapper);
+    }
+
+    @Override
+    public List<CharacteristicDTO> getAllTypeFeatureWithIDByProductCode(
+            String codeProduct
+    ) {
+        String sql = "select type_feature.id as id," +
+                "characteristic.value as value " +
+                "from characteristic " +
+                "join type_feature on characteristic.id_type_feature = type_feature.id " +
+                "where characteristic.id_product = " + "'" + codeProduct + "'";
+        ResultSetExtractor<List<CharacteristicDTO>> mapper = JdbcTemplateMapperFactory
+                .newInstance()
+                .newResultSetExtractor(CharacteristicDTO.class);
         return jdbcTemplate.query(sql, mapper);
     }
 

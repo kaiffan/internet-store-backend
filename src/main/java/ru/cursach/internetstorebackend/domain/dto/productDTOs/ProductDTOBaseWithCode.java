@@ -6,9 +6,6 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class ProductDTOBase {
-    private String name;
-    private String description;
-    private String image;
-    private Double raiting;
+public class ProductDTOBaseWithCode extends ProductDTOBase {
+    private UUID code_product;
 }

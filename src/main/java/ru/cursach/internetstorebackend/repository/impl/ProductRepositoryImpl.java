@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductDTO;
 import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductForUpdateRowDTO;
 import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductShortDTO;
+import ru.cursach.internetstorebackend.domain.dto.request.ProductCreateDTO;
+import ru.cursach.internetstorebackend.domain.dto.request.ProductUpdateRequest;
 import ru.cursach.internetstorebackend.domain.entity.Product;
 import ru.cursach.internetstorebackend.repository.BaseJDBCTemplateRepository;
 import ru.cursach.internetstorebackend.repository.interfaces.ProductRepository;
@@ -55,12 +57,39 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
                 "         join country on product.id_country = country.id " +
                 "         join manufacturer on product.id_manufacturer = manufacturer.id " +
                 "        join dimensions on product.id_dimensions = dimensions.id " +
-                "where product.code_product = "+ "'" + codeProduct + "'";
+                "where product.code_product = " + "'" + codeProduct + "'";
 
 
         ResultSetExtractor<List<ProductDTO>> mapper = JdbcTemplateMapperFactory
                 .newInstance()
                 .newResultSetExtractor(ProductDTO.class);
+        return jdbcTemplate.query(sql, mapper);
+    }
+
+    @Override
+    public List<ProductCreateDTO> getCreateProductByCodeProduct(String codeProduct) {
+        String sql = " select product.code_product, " +
+                "       product.name, " +
+                "       product.description, " +
+                "       product.image, " +
+                "       product.model, " +
+                "       product.code_manufacturer, " +
+                "       product.warranty, " +
+                "       product.raiting, " +
+                "       product.id_country as idCountry," +
+                "       product.id_manufacturer as idManufacturer," +
+                "       dimensions.length as dimensions_length, " +
+                "       dimensions.width as dimensions_width, " +
+                "       dimensions.height as dimensions_height, " +
+                "       dimensions.weight as dimensions_weight " +
+                "from product " +
+                "        join dimensions on product.id_dimensions = dimensions.id " +
+                "where product.code_product = " + "'" + codeProduct + "'";
+
+
+        ResultSetExtractor<List<ProductCreateDTO>> mapper = JdbcTemplateMapperFactory
+                .newInstance()
+                .newResultSetExtractor(ProductCreateDTO.class);
         return jdbcTemplate.query(sql, mapper);
     }
 
@@ -73,8 +102,8 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
     }
 
     @Override
-    public int updateProductByCodeProduct(String codeProduct, ProductForUpdateRowDTO product) {
-        String sql = " update product " +
+    public int updateProductByCodeProduct(String codeProduct, ProductUpdateRequest product) {
+        String updateProductSql = "update product " +
                 " set name              = ?, " +
                 "    description       = ?, " +
                 "    model             = ?, " +
@@ -84,10 +113,18 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
                 "    raiting           = ?, " +
                 "    id_country        = ?, " +
                 "    id_manufacturer   = ?, " +
-                "    id_subcategory    = ?, " +
-                "    id_dimensions     = ? " +
                 "where code_product = " + "'" + codeProduct + "'";
-        return jdbcTemplate.update(sql,
+
+        String updateDimensionsSql = "update dimensions " +
+                "set width = ?, " +
+                " height = ?, " +
+                " length = ?, " +
+                " weight = ? " +
+                " where id = (select id_dimensions " +
+                "             from product" +
+                "             where code_product = ?)";
+
+        jdbcTemplate.update(updateProductSql,
                 product.getName(),
                 product.getDescription(),
                 product.getModel(),
@@ -95,9 +132,16 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
                 product.getCode_manufacturer(),
                 product.getWarranty(),
                 product.getRaiting(),
-                product.getCountry(),
-                product.getManufacturer(),
-                product.getSubcategory(),
-                product.getDimensions());
+                product.getIdCountry(),
+                product.getIdManufacturer());
+
+        jdbcTemplate.update(updateDimensionsSql,
+                product.getDimensions().getWidth(),
+                product.getDimensions().getHeight(),
+                product.getDimensions().getLength(),
+                product.getDimensions().getWeight(),
+                product.getCode_product());
+
+        return 1;
     }
 }

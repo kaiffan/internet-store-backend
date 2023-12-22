@@ -1,5 +1,7 @@
 package ru.cursach.internetstorebackend.repository.interfaces;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import ru.cursach.internetstorebackend.domain.dto.characteristic.CharacteristicOperationDTO;
 import ru.cursach.internetstorebackend.domain.dto.referenceValue.ReferenceValueDTO;
 import ru.cursach.internetstorebackend.domain.dto.characteristic.CharacteristicDTO;
 import ru.cursach.internetstorebackend.domain.dto.characteristic.CharacteristicProductDTO;
@@ -24,4 +26,6 @@ public interface CharacteristicRepository {
     List<ReferenceValueForArrayDTO> getAllReferenceValueByTypeFeature(int typeFeature);
 
     ReferenceValueDTO getNameTypeFeature(int typeFeature);
+
+    void executeOperationCharacteristics(String codeProduct, List<CharacteristicOperationDTO> characteristicDTOS);
 }

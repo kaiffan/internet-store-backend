@@ -2,8 +2,8 @@ package ru.cursach.internetstorebackend.services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.cursach.internetstorebackend.domain.dto.characteristic.CharacteristicOperationDTO;
 import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductDTO;
-import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductForUpdateRowDTO;
 import ru.cursach.internetstorebackend.domain.dto.request.ProductCreateDTO;
 import ru.cursach.internetstorebackend.domain.dto.request.ProductUpdateRequest;
 import ru.cursach.internetstorebackend.exceptions.NotFoundException;
@@ -52,5 +52,9 @@ public class ProductService {
         ProductCreateDTO productDTO = productDTOs.get(0);
         productDTO.setCharacteristics(characteristicRepository.getAllTypeFeatureWithIDByProductCode(codeProduct));
         return productDTOs.get(0);
+    }
+
+    public void insertCharacteristics(String codeProduct, List<CharacteristicOperationDTO> characteristicDTOS) {
+        characteristicRepository.executeOperationCharacteristics(codeProduct, characteristicDTOS);
     }
 }

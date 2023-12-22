@@ -30,5 +30,4 @@ public class СharacteristicController {
     ) {
         return characteristicService.getAllReferenceValueByTypeFeature(typeFeatures);
     }
-
 }

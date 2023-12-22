@@ -7,6 +7,6 @@ public class RequestConstant {
     public static final String country = apiHandler + "/country";
     public static final String manufacturer = apiHandler + "/manufacturer";
     public static final String catalogue = apiHandler + "/catalog";
-    public static final String product = apiHandler + "/product";
+    public static final String product = apiHandler + "/products";
 
 }

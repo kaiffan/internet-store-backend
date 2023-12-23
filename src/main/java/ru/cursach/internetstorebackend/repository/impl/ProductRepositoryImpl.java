@@ -26,6 +26,7 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
                 "(product_price(code_product, CURRENT_DATE)).price as price" +
                 " from product " +
                 " where product.id_subcategory = " + idSubcategory +
+                " and not product.deleted " +
                 " limit " + limit +
                 " offset " + offset;
 

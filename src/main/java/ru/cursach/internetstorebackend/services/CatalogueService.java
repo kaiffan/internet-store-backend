@@ -45,9 +45,9 @@ public class CatalogueService {
     ) {
         List<CharacteristicDTO> characteristics = productCreateDTO.getCharacteristics();
 
-        if(characteristics.isEmpty()) {
-            throw new IllegalArgumentException("Массив характеристик пуст");
-        }
+//        if(characteristics.isEmpty()) {
+//            throw new IllegalArgumentException("Массив характеристик пуст");
+//        }
 
         UUID dimensionsUUID = dimensionsRepository.insertDimensionForProduct(productCreateDTO.getDimensions());
         UUID codeProduct = categoryRepository.insertNewProductInSubCategory(idSubcategory, productCreateDTO, dimensionsUUID);

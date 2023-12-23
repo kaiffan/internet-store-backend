@@ -8,5 +8,6 @@ public class RequestConstant {
     public static final String manufacturer = apiHandler + "/manufacturer";
     public static final String catalogue = apiHandler + "/catalog";
     public static final String product = apiHandler + "/products";
+    public static final String analyticalQueries = apiHandler + "/analytic";
 
 }

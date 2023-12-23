@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductDTO;
-import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductForUpdateRowDTO;
 import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductShortDTO;
 import ru.cursach.internetstorebackend.domain.dto.request.ProductCreateDTO;
 import ru.cursach.internetstorebackend.domain.dto.request.ProductUpdateRequest;

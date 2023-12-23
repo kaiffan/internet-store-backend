@@ -5,6 +5,7 @@ import ru.cursach.internetstorebackend.domain.dto.DimensionsDTO;
 
 @Data
 public class ExtendProductDTO extends ProductShortDTO {
+    private int id_subcategory;
     private String code_manufacturer;
     private String model;
     private Integer warranty;

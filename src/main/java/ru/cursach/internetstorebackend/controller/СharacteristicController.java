@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.cursach.internetstorebackend.constants.RequestConstant;
 import ru.cursach.internetstorebackend.domain.dto.referenceValue.ReferenceValueDTO;
+import ru.cursach.internetstorebackend.domain.dto.request.ReferencesValuesRequest;
 import ru.cursach.internetstorebackend.domain.entity.TypeFeature;
 import ru.cursach.internetstorebackend.services.CharacteristicService;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @CrossOrigin
@@ -26,8 +29,8 @@ public class СharacteristicController {
 
     @GetMapping("/typeFeature")
     public List<ReferenceValueDTO> getAllReferenceValueForTypeFeature(
-            @RequestParam int[] typeFeatures
+            @RequestParam int[] ids
     ) {
-        return characteristicService.getAllReferenceValueByTypeFeature(typeFeatures);
+        return characteristicService.getAllReferenceValueByTypeFeature(ids);
     }
 }

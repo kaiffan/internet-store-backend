@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductDTO;
-import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductForUpdateRowDTO;
 import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductShortDTO;
 import ru.cursach.internetstorebackend.domain.dto.request.ProductCreateDTO;
 import ru.cursach.internetstorebackend.domain.dto.request.ProductUpdateRequest;
@@ -69,6 +68,7 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
     @Override
     public List<ProductCreateDTO> getCreateProductByCodeProduct(String codeProduct) {
         String sql = " select product.code_product, " +
+                "       product.id_subcategory, " +
                 "       product.name, " +
                 "       product.description, " +
                 "       product.image, " +
@@ -112,8 +112,8 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
                 "    warranty          = ?, " +
                 "    raiting           = ?, " +
                 "    id_country        = ?, " +
-                "    id_manufacturer   = ?, " +
-                "where code_product = " + "'" + codeProduct + "'";
+                "    id_manufacturer   = ? " +
+                " where code_product = " + "'" + codeProduct + "'";
 
         String updateDimensionsSql = "update dimensions " +
                 "set width = ?, " +

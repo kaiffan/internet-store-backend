@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class ReferenceValueDTO {
-    private int idTypeFeature;
-    private String nameTypeFeature;
-    private List<String> referenceValues;
+    private int id;
+    private String name;
+    private List<ReferenceValueForArrayDTO> referenceValues;
 }

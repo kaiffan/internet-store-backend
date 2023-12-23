@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class ReferenceValueForArrayDTO {
-    private String nameValue;
+    private String id;
+    private String value;
 }

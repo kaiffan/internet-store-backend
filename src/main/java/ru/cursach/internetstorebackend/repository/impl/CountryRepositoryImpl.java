@@ -19,7 +19,7 @@ public class CountryRepositoryImpl extends BaseJDBCTemplateRepository<Country> i
 
     @Override
     public List<Country> getAllCountries() {
-        String sql = "select id, name from country";
+        String sql = "select id, name as value from country";
 
         ResultSetExtractor<List<Country>> mapper = JdbcTemplateMapperFactory
                 .newInstance()

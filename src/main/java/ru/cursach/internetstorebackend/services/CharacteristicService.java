@@ -24,11 +24,8 @@ public class CharacteristicService {
         List<ReferenceValueDTO> referenceValues = new ArrayList<>();
 
         for (int typeFeatures : typeFeaturesIdList) {
-            List<String> referenceValue =
-                    characteristicRepository.getAllReferenceValueByTypeFeature(typeFeatures)
-                            .stream()
-                            .map(ReferenceValueForArrayDTO::getNameValue)
-                            .collect(Collectors.toList());
+            var referenceValue =
+                    characteristicRepository.getAllReferenceValueByTypeFeature(typeFeatures);
             ReferenceValueDTO referenceValueDTO = characteristicRepository.getNameTypeFeature(typeFeatures);
             referenceValueDTO.setReferenceValues(referenceValue);
             referenceValues.add(referenceValueDTO);

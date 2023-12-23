@@ -90,8 +90,8 @@ public class CharacteristicRepositoryImpl extends BaseJDBCTemplateRepository<Cha
 
     @Override
     public List<ReferenceValueForArrayDTO> getAllReferenceValueByTypeFeature(int typeFeature) {
-        String sql = "select reference_value.name_value as nameValue " +
-                "from reference_value " +
+        String sql = "select reference_value.name_value as value, reference_value.id as id " +
+                " from reference_value " +
                 "where id_type_feature = " + typeFeature;
 
         ResultSetExtractor<List<ReferenceValueForArrayDTO>> mapper = JdbcTemplateMapperFactory
@@ -103,8 +103,8 @@ public class CharacteristicRepositoryImpl extends BaseJDBCTemplateRepository<Cha
 
     @Override
     public ReferenceValueDTO getNameTypeFeature(int typeFeature) {
-        String sql = "select type_feature.id as idTypeFeature, " +
-                "type_feature.name as nameTypeFeature " +
+        String sql = "select type_feature.id as id, " +
+                "type_feature.name as name " +
                 "from type_feature " +
                 "where id = " + typeFeature;
         RowMapper<ReferenceValueDTO> mapper = JdbcTemplateMapperFactory.newInstance().newRowMapper(ReferenceValueDTO.class);
@@ -139,7 +139,7 @@ public class CharacteristicRepositoryImpl extends BaseJDBCTemplateRepository<Cha
         }
 
         List<String> removeValues = characteristicDTOS.stream()
-                .filter(x -> x.getOperation().equals("replace"))
+                .filter(x -> x.getOperation().equals("remove"))
                 .map(element -> String.valueOf(element.getId()))
                 .toList();
 

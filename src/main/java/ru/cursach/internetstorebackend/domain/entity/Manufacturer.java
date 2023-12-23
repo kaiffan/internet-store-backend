@@ -13,5 +13,5 @@ import ru.cursach.internetstorebackend.annotation.Table;
 @Table(name = "price")
 public class Manufacturer extends Entity {
     private Integer id;
-    private String name;
+    private String value;
 }

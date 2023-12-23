@@ -13,5 +13,5 @@ import ru.cursach.internetstorebackend.annotation.Table;
 @Table(name = "country")
 public class Country extends Entity {
     private Integer id;
-    private String name;
+    private String value;
 }

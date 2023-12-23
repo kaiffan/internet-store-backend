@@ -1,7 +1,6 @@
 package ru.cursach.internetstorebackend.repository.interfaces;
 
 import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductDTO;
-import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductForUpdateRowDTO;
 import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductShortDTO;
 import ru.cursach.internetstorebackend.domain.dto.request.ProductCreateDTO;
 import ru.cursach.internetstorebackend.domain.dto.request.ProductUpdateRequest;

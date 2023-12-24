@@ -45,6 +45,7 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
                 "       product.image, " +
                 "       product.model, " +
                 "       product.code_manufacturer, " +
+                "       product.id_subcategory, " +
                 "       product.warranty, " +
                 "       product.raiting, " +
                 "       round((product_price(code_product, current_date)).price) as price, " +
@@ -76,6 +77,7 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
                 "       product.model, " +
                 "       product.code_manufacturer, " +
                 "       product.warranty, " +
+                "       product.id_subcategory, " +
                 "       product.raiting, " +
                 "       round((product_price(code_product, CURRENT_DATE)).price) as price, " +
                 "       product.id_country as idCountry," +
@@ -114,8 +116,8 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
                 "    warranty          = ?, " +
                 "    raiting           = ?, " +
                 "    id_country        = ?, " +
-                "    id_manufacturer   = ?, " +
-                "where code_product = " + "'" + codeProduct + "'";
+                "    id_manufacturer   = ? " +
+                "    where code_product = " + "'" + codeProduct + "'";
 
         String updateDimensionsSql = "update dimensions " +
                 "set width = ?, " +

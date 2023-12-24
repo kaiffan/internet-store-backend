@@ -26,8 +26,8 @@ public class СharacteristicController {
 
     @GetMapping("/typeFeature")
     public List<ReferenceValueDTO> getAllReferenceValueForTypeFeature(
-            @RequestParam int[] typeFeatures
+            @RequestParam int[] ids
     ) {
-        return characteristicService.getAllReferenceValueByTypeFeature(typeFeatures);
+        return characteristicService.getAllReferenceValueByTypeFeature(ids);
     }
 }

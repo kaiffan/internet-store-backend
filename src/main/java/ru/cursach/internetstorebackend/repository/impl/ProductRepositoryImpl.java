@@ -11,6 +11,7 @@ import ru.cursach.internetstorebackend.domain.dto.request.ProductUpdateRequest;
 import ru.cursach.internetstorebackend.domain.entity.Product;
 import ru.cursach.internetstorebackend.repository.BaseJDBCTemplateRepository;
 import ru.cursach.internetstorebackend.repository.interfaces.ProductRepository;
+import ru.cursach.internetstorebackend.utils.Utils;
 
 import java.util.List;
 
@@ -39,15 +40,16 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
 
     @Override
     public List<ProductDTO> getProductByCodeProduct(String codeProduct) {
-        String sql = " select product.code_product, " +
-                "       product.name, " +
-                "       product.description, " +
-                "       product.image, " +
-                "       product.model, " +
-                "       product.code_manufacturer, " +
-                "       product.warranty, " +
-                "       product.raiting, " +
-                "       round((product_price(code_product, current_date)).price) as price, " +
+        String sql = " select code_product, " +
+                "       name, " +
+                "       description, " +
+                "       image, " +
+                "       model, " +
+                "       code_manufacturer, " +
+                "       warranty, " +
+                "       raiting, " +
+                "       id_subcategory, " +
+                "       price as price, " +
                 "       name_country as country," +
                 "       name_manufacturer as manufacturer," +
                 "       length as dimensions_length, " +

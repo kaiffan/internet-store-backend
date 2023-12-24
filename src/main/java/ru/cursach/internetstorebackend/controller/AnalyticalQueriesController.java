@@ -1,10 +1,7 @@
 package ru.cursach.internetstorebackend.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.cursach.internetstorebackend.constants.RequestConstant;
 import ru.cursach.internetstorebackend.domain.dto.analytical.AnalyticPriceDTO;
 import ru.cursach.internetstorebackend.domain.dto.analytical.AnalyticTimeDTO;
@@ -16,6 +13,7 @@ import ru.cursach.internetstorebackend.services.AnalyticalService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @AllArgsConstructor
 @RequestMapping(RequestConstant.analyticalQueries)
 public class AnalyticalQueriesController {

@@ -35,7 +35,7 @@ public class AnalyticalRepositoryImpl extends BaseJDBCTemplateRepository<Product
 
     @Override
     public List<AnalyticPriceDTO> getPricesForProduct(String dateStart, String dateEnd, String codeProduct) {
-        String sql = "select price_value as value, date_price as datePrice" +
+        String sql = "select round(price_value) as value, date_price as datePrice" +
                 " from get_price_for_product_analit('"
                 + dateStart + "', '" + dateEnd + "', " + Utils.wrapUUID(codeProduct) + ");";
 
@@ -58,7 +58,7 @@ public class AnalyticalRepositoryImpl extends BaseJDBCTemplateRepository<Product
     }
 
     public List<AnalyticTimeDTO> getSupplierPerformanceAnalysis() {
-        String sql = "select supplier_name as name, time_shipment as avgDate from supplier_performance_analysis()";
+        String sql = "select supplier_name as name, round(time_shipment) as avgDate from supplier_performance_analysis()";
 
         ResultSetExtractor<List<AnalyticTimeDTO>> mapper = JdbcTemplateMapperFactory
                 .newInstance()

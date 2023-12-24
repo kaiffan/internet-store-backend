@@ -3,13 +3,11 @@ package ru.cursach.internetstorebackend.services;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.cursach.internetstorebackend.domain.dto.referenceValue.ReferenceValueDTO;
-import ru.cursach.internetstorebackend.domain.dto.referenceValue.ReferenceValueForArrayDTO;
 import ru.cursach.internetstorebackend.domain.entity.TypeFeature;
 import ru.cursach.internetstorebackend.repository.interfaces.CharacteristicRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -23,7 +21,7 @@ public class CharacteristicService {
     public List<ReferenceValueDTO> getAllReferenceValueByTypeFeature(int[] typeFeaturesIdList) {
         List<ReferenceValueDTO> referenceValues = new ArrayList<>();
 
-        for (int typeFeatures : typeFeaturesIdList) {
+        for (Integer typeFeatures : typeFeaturesIdList) {
             var referenceValue =
                     characteristicRepository.getAllReferenceValueByTypeFeature(typeFeatures);
             ReferenceValueDTO referenceValueDTO = characteristicRepository.getNameTypeFeature(typeFeatures);

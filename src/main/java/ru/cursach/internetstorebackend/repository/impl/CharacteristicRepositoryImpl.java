@@ -149,4 +149,12 @@ public class CharacteristicRepositoryImpl extends BaseJDBCTemplateRepository<Cha
             jdbcTemplate.execute(sqlRemove);
         }
     }
+
+    @Override
+    public String getValueReferenceType(String codeReferenceType) {
+        String sql = "select name_value as value from reference_value where id = " + codeReferenceType;
+        RowMapper<ReferenceValueForArrayDTO> mapper = JdbcTemplateMapperFactory.newInstance().newRowMapper(ReferenceValueForArrayDTO.class);
+        List<ReferenceValueForArrayDTO> referenceValues = jdbcTemplate.query(sql, mapper);
+        return referenceValues.get(0).getValue();
+    }
 }

@@ -19,8 +19,7 @@ public class DimensionsRepositoryImpl extends BaseJDBCTemplateRepository<Dimensi
     @Override
     public UUID insertDimensionForProduct(DimensionsDTO dimensions) {
         UUID idDimension = UUID.randomUUID();
-        String sql = "insert into dimensions " +
-                "values (?, ?, ?, ?, ?)";
+        String sql = "call insert_dimensions_for_product(?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 idDimension,
                 dimensions.getLength(),
@@ -28,6 +27,5 @@ public class DimensionsRepositoryImpl extends BaseJDBCTemplateRepository<Dimensi
                 dimensions.getHeight(),
                 dimensions.getWeight());
         return idDimension;
-
     }
 }

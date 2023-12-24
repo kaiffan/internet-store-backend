@@ -11,6 +11,7 @@ import ru.cursach.internetstorebackend.domain.dto.request.ProductUpdateRequest;
 import ru.cursach.internetstorebackend.domain.entity.Product;
 import ru.cursach.internetstorebackend.repository.BaseJDBCTemplateRepository;
 import ru.cursach.internetstorebackend.repository.interfaces.ProductRepository;
+import ru.cursach.internetstorebackend.utils.Utils;
 
 import java.util.List;
 
@@ -23,10 +24,10 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
     @Override
     public List<ProductShortDTO> getAllProductShortDTOBySubcategory(int idSubcategory, int limit, int offset) {
         String sql = "select code_product, name, description, image, raiting, " +
-                "round((product_price(code_product, CURRENT_DATE)).price) as price" +
-                " from product " +
-                " where product.id_subcategory = " + idSubcategory +
-                " and not product.deleted " +
+                " price as price" +
+                " from  product_short_view" +
+                " where id_subcategory = " + idSubcategory +
+                " and not deleted " +
                 " limit " + limit +
                 " offset " + offset;
 
@@ -39,26 +40,23 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
 
     @Override
     public List<ProductDTO> getProductByCodeProduct(String codeProduct) {
-        String sql = " select product.code_product, " +
-                "       product.name, " +
-                "       product.description, " +
-                "       product.image, " +
-                "       product.model, " +
-                "       product.code_manufacturer, " +
-                "       product.warranty, " +
-                "       product.raiting, " +
+        String sql = " select code_product, " +
+                "       name, " +
+                "       description, " +
+                "       image, " +
+                "       model, " +
+                "       code_manufacturer, " +
+                "       warranty, " +
+                "       raiting, " +
                 "       round((product_price(code_product, current_date)).price) as price, " +
-                "       country.name as country," +
-                "       manufacturer.name as manufacturer," +
-                "       dimensions.length as dimensions_length, " +
-                "       dimensions.width as dimensions_width, " +
-                "       dimensions.height as dimensions_height, " +
-                "       dimensions.weight as dimensions_weight " +
-                "from product " +
-                "         join country on product.id_country = country.id " +
-                "         join manufacturer on product.id_manufacturer = manufacturer.id " +
-                "        join dimensions on product.id_dimensions = dimensions.id " +
-                "where product.code_product = " + "'" + codeProduct + "'";
+                "       name_country as country," +
+                "       name_manufacturer as manufacturer," +
+                "       length as dimensions_length, " +
+                "       width as dimensions_width, " +
+                "       height as dimensions_height, " +
+                "       weight as dimensions_weight " +
+                "from  product_dto_view " +
+                "where code_product = " + "'" + codeProduct + "'";
 
 
         ResultSetExtractor<List<ProductDTO>> mapper = JdbcTemplateMapperFactory
@@ -97,36 +95,18 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
 
     @Override
     public int deleteProductByCodeProduct(String codeProduct) {
-        String sql = "update product " +
-                " set deleted = true " +
-                " where code_product = " + "'" + codeProduct + "'";
-        return jdbcTemplate.update(sql);
+        String sql = "call delete_product(?)";
+        return jdbcTemplate.update(sql, Utils.wrapUUID(codeProduct));
     }
 
     @Override
     public int updateProductByCodeProduct(String codeProduct, ProductUpdateRequest product) {
-        String updateProductSql = "update product " +
-                " set name              = ?, " +
-                "    description       = ?, " +
-                "    model             = ?, " +
-                "    image             = ?, " +
-                "    code_manufacturer = ?, " +
-                "    warranty          = ?, " +
-                "    raiting           = ?, " +
-                "    id_country        = ?, " +
-                "    id_manufacturer   = ?, " +
-                "where code_product = " + "'" + codeProduct + "'";
+        String updateProductSql = "call update_product_info(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        String updateDimensionsSql = "update dimensions " +
-                "set width = ?, " +
-                " height = ?, " +
-                " length = ?, " +
-                " weight = ? " +
-                " where id = (select id_dimensions " +
-                "             from product" +
-                "             where code_product = ?)";
+        String updateDimensionsSql = "call update_dimensions_for_product(?, ?, ?, ?, ?)";
 
         jdbcTemplate.update(updateProductSql,
+                Utils.wrapUUID(codeProduct),
                 product.getName(),
                 product.getDescription(),
                 product.getModel(),
@@ -138,9 +118,9 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
                 product.getIdManufacturer());
 
         jdbcTemplate.update(updateDimensionsSql,
+                product.getDimensions().getLength(),
                 product.getDimensions().getWidth(),
                 product.getDimensions().getHeight(),
-                product.getDimensions().getLength(),
                 product.getDimensions().getWeight(),
                 product.getCode_product());
 

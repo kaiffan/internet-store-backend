@@ -23,7 +23,7 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
     @Override
     public List<ProductShortDTO> getAllProductShortDTOBySubcategory(int idSubcategory, int limit, int offset) {
         String sql = "select code_product, name, description, image, raiting, " +
-                "(product_price(code_product, CURRENT_DATE)).price as price" +
+                "round((product_price(code_product, CURRENT_DATE)).price) as price" +
                 " from product " +
                 " where product.id_subcategory = " + idSubcategory +
                 " and not product.deleted " +
@@ -47,6 +47,7 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
                 "       product.code_manufacturer, " +
                 "       product.warranty, " +
                 "       product.raiting, " +
+                "       round((product_price(code_product, current_date)).price) as price, " +
                 "       country.name as country," +
                 "       manufacturer.name as manufacturer," +
                 "       dimensions.length as dimensions_length, " +
@@ -69,7 +70,6 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
     @Override
     public List<ProductCreateDTO> getCreateProductByCodeProduct(String codeProduct) {
         String sql = " select product.code_product, " +
-                "       product.id_subcategory, " +
                 "       product.name, " +
                 "       product.description, " +
                 "       product.image, " +
@@ -77,6 +77,7 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
                 "       product.code_manufacturer, " +
                 "       product.warranty, " +
                 "       product.raiting, " +
+                "       round((product_price(code_product, CURRENT_DATE)).price) as price, " +
                 "       product.id_country as idCountry," +
                 "       product.id_manufacturer as idManufacturer," +
                 "       dimensions.length as dimensions_length, " +
@@ -113,8 +114,8 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
                 "    warranty          = ?, " +
                 "    raiting           = ?, " +
                 "    id_country        = ?, " +
-                "    id_manufacturer   = ? " +
-                " where code_product = " + "'" + codeProduct + "'";
+                "    id_manufacturer   = ?, " +
+                "where code_product = " + "'" + codeProduct + "'";
 
         String updateDimensionsSql = "update dimensions " +
                 "set width = ?, " +

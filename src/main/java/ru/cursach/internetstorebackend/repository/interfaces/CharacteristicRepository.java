@@ -28,4 +28,6 @@ public interface CharacteristicRepository {
     ReferenceValueDTO getNameTypeFeature(int typeFeature);
 
     void executeOperationCharacteristics(String codeProduct, List<CharacteristicOperationDTO> characteristicDTOS);
+
+    String getValueReferenceType(String codeReferenceType);
 }

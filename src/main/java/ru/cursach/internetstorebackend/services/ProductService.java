@@ -3,14 +3,17 @@ package ru.cursach.internetstorebackend.services;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.cursach.internetstorebackend.domain.dto.characteristic.CharacteristicOperationDTO;
+import ru.cursach.internetstorebackend.domain.dto.characteristic.CharacteristicProductDTO;
 import ru.cursach.internetstorebackend.domain.dto.productDTOs.ProductDTO;
 import ru.cursach.internetstorebackend.domain.dto.request.ProductCreateDTO;
 import ru.cursach.internetstorebackend.domain.dto.request.ProductUpdateRequest;
 import ru.cursach.internetstorebackend.exceptions.NotFoundException;
 import ru.cursach.internetstorebackend.repository.interfaces.CharacteristicRepository;
 import ru.cursach.internetstorebackend.repository.interfaces.ProductRepository;
+import ru.cursach.internetstorebackend.utils.Utils;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -29,6 +32,17 @@ public class ProductService {
         }
         ProductDTO productDTO = productDTOs.get(0);
         productDTO.setCharacteristics(characteristicRepository.getAllTypeFeatureByProductCode(codeProduct));
+        List<CharacteristicProductDTO> characteristicProductDTOS = productDTO.getCharacteristics();
+        for (int i = 0; i < characteristicProductDTOS.size(); i++) {
+            try {
+                String uuid = Utils.wrapUUID(characteristicProductDTOS.get(i).getValue());
+                if (uuid.charAt(0) == '\'') {
+                    String referenceValue = characteristicRepository.getValueReferenceType(uuid);
+                    characteristicProductDTOS.get(i).setValue(referenceValue);
+                }
+            } catch (IllegalArgumentException ignored) { }
+        }
+
         return productDTOs.get(0);
     }
 

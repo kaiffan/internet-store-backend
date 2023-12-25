@@ -80,4 +80,20 @@ public class AnalyticalQueriesController {
     ) {
         return analyticalService.getRaitingManufacturers();
     }
+
+    @GetMapping("/turnover_coef_products")
+    public List<AnalyticalValueDTO> getTurnoverCoefficientOfProducts(
+            @RequestParam String dateStart,
+            @RequestParam String dateEnd
+    ) {
+        return analyticalService.getTurnoverCoefficientOfProducts(dateStart, dateEnd);
+    }
+
+    @GetMapping("/warehouse_performance_analysis")
+    public List<AnalyticalValueDTO> warehousePerformanceAnalysis(
+            @RequestParam String dateStart,
+            @RequestParam String dateEnd
+    ) {
+        return analyticalService.warehousePerformanceAnalysis(dateStart, dateEnd);
+    }
 }

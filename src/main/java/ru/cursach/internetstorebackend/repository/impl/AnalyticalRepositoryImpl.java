@@ -106,4 +106,26 @@ public class AnalyticalRepositoryImpl extends BaseJDBCTemplateRepository<Product
                 .newResultSetExtractor(AnalyticalValueDTO.class);
         return jdbcTemplate.query(sql, mapper);
     }
+
+    @Override
+    public List<AnalyticalValueDTO> getTurnoverCoefficientOfProducts(String dateStart, String dateEnd) {
+        String sql = "select product_name as name, turnover_coefficient as value " +
+                "from get_turnover_coefficient_of_products('" + dateStart + "', '" + dateEnd + "')";
+
+        ResultSetExtractor<List<AnalyticalValueDTO>> mapper = JdbcTemplateMapperFactory
+                .newInstance()
+                .newResultSetExtractor(AnalyticalValueDTO.class);
+        return jdbcTemplate.query(sql, mapper);
+    }
+
+    @Override
+    public List<AnalyticalValueDTO> warehousePerformanceAnalysis(String dateStart, String dateEnd) {
+        String sql = "select warehouse_address as name, time_processing as value " +
+                "from warehouse_performance_analysis('" + dateStart + "', '" + dateEnd + "')";
+
+        ResultSetExtractor<List<AnalyticalValueDTO>> mapper = JdbcTemplateMapperFactory
+                .newInstance()
+                .newResultSetExtractor(AnalyticalValueDTO.class);
+        return jdbcTemplate.query(sql, mapper);
+    }
 }

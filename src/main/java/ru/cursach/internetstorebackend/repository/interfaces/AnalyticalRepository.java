@@ -15,4 +15,6 @@ public interface AnalyticalRepository {
     List<AnalyticalValueDTO> getTopCategories(String dateStart, String dateEnd);
     List<AnalyticalValueDTO> getTopProducts(String dateStart, String dateEnd);
     List<AnalyticalValueDTO> getRaitingManufacturers();
+    List<AnalyticalValueDTO> getTurnoverCoefficientOfProducts(String dateStart, String dateEnd);
+    List<AnalyticalValueDTO> warehousePerformanceAnalysis(String dateStart, String dateEnd);
 }

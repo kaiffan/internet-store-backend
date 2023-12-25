@@ -46,4 +46,11 @@ public class AnalyticalService {
     public List<AnalyticalValueDTO> getRaitingManufacturers() {
         return analyticalRepository.getRaitingManufacturers();
     }
+
+    public List<AnalyticalValueDTO> getTurnoverCoefficientOfProducts(String dateStart, String dateEnd) {
+        return analyticalRepository.getTurnoverCoefficientOfProducts(dateStart, dateEnd);
+    }
+    public List<AnalyticalValueDTO> warehousePerformanceAnalysis(String dateStart, String dateEnd) {
+        return analyticalRepository.warehousePerformanceAnalysis(dateStart, dateEnd);
+    }
 }

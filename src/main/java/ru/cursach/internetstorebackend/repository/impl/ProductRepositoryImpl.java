@@ -57,7 +57,7 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
                 "       height as dimensions_height, " +
                 "       weight as dimensions_weight " +
                 "from  product_dto_view " +
-                "where code_product = " + "'" + codeProduct + "'";
+                "where code_product = " + Utils.wrapUUID(codeProduct) + " ";
 
 
         ResultSetExtractor<List<ProductDTO>> mapper = JdbcTemplateMapperFactory
@@ -68,26 +68,23 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
 
     @Override
     public List<ProductCreateDTO> getCreateProductByCodeProduct(String codeProduct) {
-        String sql = " select product.code_product, " +
-                "       product.name, " +
-                "       product.description, " +
-                "       product.image, " +
-                "       product.model, " +
-                "       product.code_manufacturer, " +
-                "       product.warranty, " +
-                "       product.id_subcategory, " +
-                "       product.raiting, " +
-                "       round((product_price(code_product, CURRENT_DATE)).price) as price, " +
-                "       product.id_country as idCountry," +
-                "       product.id_manufacturer as idManufacturer," +
-                "       dimensions.length as dimensions_length, " +
-                "       dimensions.width as dimensions_width, " +
-                "       dimensions.height as dimensions_height, " +
-                "       dimensions.weight as dimensions_weight " +
-                "from product " +
-                "        join dimensions on product.id_dimensions = dimensions.id " +
-                "where product.code_product = " + "'" + codeProduct + "'";
-
+        String sql = " select code_product_prod as code_product, " +
+                "       name_prod as name, " +
+                "       description_prod as description, " +
+                "       image_prod as image, " +
+                "       model_prod as model, " +
+                "       code_manufacturer_prod as code_manufacturer, " +
+                "       warranty_prod as warranty, " +
+                "       id_subcategory_prod as id_subcategory, " +
+                "       raiting_prod as raiting, " +
+                "       price_prod as price, " +
+                "       id_country_prod as idCountry," +
+                "       id_manufacturer_prod as idManufacturer," +
+                "       length_prod as dimensions_length, " +
+                "       width_prod as dimensions_width, " +
+                "       height_prod as dimensions_height, " +
+                "       weight_prod as dimensions_weight " +
+                "from get_create_product_by_code_product(" + Utils.wrapUUID(codeProduct) + ")";
 
         ResultSetExtractor<List<ProductCreateDTO>> mapper = JdbcTemplateMapperFactory
                 .newInstance()

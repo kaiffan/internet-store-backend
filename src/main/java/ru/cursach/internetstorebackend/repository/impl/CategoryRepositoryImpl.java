@@ -25,16 +25,8 @@ public class CategoryRepositoryImpl extends BaseJDBCTemplateRepository<Category>
 
     @Override
     public List<CatalogueDTO> getAllCategoriesWithSubcategories() {
-        String sql = "SELECT category.id, category.title, " +
-                "subcategory.id AS subcategories_id, subcategory.title AS subcategories_title " +
-                "FROM category " +
-                "LEFT JOIN subcategory ON subcategory.parent_category = category.id " +
-                "ORDER BY id";
-
-//        String sql = "SELECT c1.id, c1.title, " +
-//                        "c2.id AS subcategories_id, c2.title AS subcategories_title " +
-//                        "FROM category c1 " +
-//                        "INNER JOIN category c2 ON c2.parent_category = c1.id ";
+        String sql = "SELECT id, title, subcategory_id as subcategories_id, subcategory_title as subcategories_title" +
+                " from get_all_categories_with_subcategories()";
 
         ResultSetExtractor<List<CatalogueDTO>> extractor = JdbcTemplateMapperFactory
                 .newInstance()
@@ -49,7 +41,7 @@ public class CategoryRepositoryImpl extends BaseJDBCTemplateRepository<Category>
     public Optional<String> getTitleById(
             int idSubcategory
     ) {
-        String sql = "select title from subcategory where id = " + idSubcategory;
+        String sql = "select title from get_title_subcategory(" + idSubcategory + ")";
         RowMapper<Subcategory> mapper = JdbcTemplateMapperFactory.newInstance().newRowMapper(Subcategory.class);
         List<Subcategory> subcategoryList = jdbcTemplate.query(sql, mapper);
         if (!subcategoryList.isEmpty()) {
@@ -65,8 +57,7 @@ public class CategoryRepositoryImpl extends BaseJDBCTemplateRepository<Category>
             UUID idDimensions
     ) {
         UUID codeProduct = UUID.randomUUID();
-        String sql = "insert into product" +
-                " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "call insert_product_in_new_subcategory(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 codeProduct,
                 productCreateDTO.getName(),

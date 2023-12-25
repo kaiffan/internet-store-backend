@@ -5,8 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.cursach.internetstorebackend.constants.RequestConstant;
 import ru.cursach.internetstorebackend.domain.dto.analytical.AnalyticPriceDTO;
 import ru.cursach.internetstorebackend.domain.dto.analytical.AnalyticTimeDTO;
-import ru.cursach.internetstorebackend.domain.dto.analytical.AnalyticUuidDTO;
-import ru.cursach.internetstorebackend.domain.dto.analytical.AnalyticalDTO;
 import ru.cursach.internetstorebackend.domain.dto.analytical.AnalyticalValueDTO;
 import ru.cursach.internetstorebackend.services.AnalyticalService;
 
@@ -47,15 +45,39 @@ public class AnalyticalQueriesController {
 
     @GetMapping("/supplier_performance_analysis")
     public List<AnalyticTimeDTO> getSupplierPerformanceAnalysis(
+            @RequestParam String dateStart,
+            @RequestParam String dateEnd
     ) {
-        return analyticalService.getSupplierPerformanceAnalysis();
+        return analyticalService.getSupplierPerformanceAnalysis(dateStart, dateEnd);
     }
 
     @GetMapping("/count_processed_orders")
-    public List<AnalyticUuidDTO> getCountProcessedOrders(
+    public List<AnalyticalValueDTO> getCountProcessedOrders(
             @RequestParam String dateStart,
             @RequestParam String dateEnd
     ) {
         return analyticalService.getCountProcessedOrders(dateStart, dateEnd);
+    }
+
+    @GetMapping("/top_categories")
+    public List<AnalyticalValueDTO> getTopCategories(
+            @RequestParam String dateStart,
+            @RequestParam String dateEnd
+    ) {
+        return analyticalService.getTopCategories(dateStart, dateEnd);
+    }
+
+    @GetMapping("/top_products")
+    public List<AnalyticalValueDTO> getTopProducts(
+            @RequestParam String dateStart,
+            @RequestParam String dateEnd
+    ) {
+        return analyticalService.getTopProducts(dateStart, dateEnd);
+    }
+
+    @GetMapping("/raiting_manufacturers")
+    public List<AnalyticalValueDTO> getRaitingManufacturers(
+    ) {
+        return analyticalService.getRaitingManufacturers();
     }
 }

@@ -32,7 +32,7 @@ public class CharacteristicRepositoryImpl extends BaseJDBCTemplateRepository<Cha
             CharacteristicDTO characteristic,
             UUID codeProduct
     ) {
-        String sqlInsertCharacteristic = "insert into characteristic values (?, ?, ?)";
+        String sqlInsertCharacteristic = "call insert_characteristic_product(?, ?, ?)";
 
         jdbcTemplate.update(sqlInsertCharacteristic,
                 characteristic.getValue(),
@@ -44,13 +44,10 @@ public class CharacteristicRepositoryImpl extends BaseJDBCTemplateRepository<Cha
     public List<TypeFeature> getAllTypeFeatureBySubcategory(
             int idSubcategory
     ) {
-        String sql = "select type_feature.id as id, " +
-                "type_feature.name as name, " +
-                "type_feature.id_unit_measurement as unitMeasurement," +
-                "type_feature.id_data_type as dataType " +
-                "from characteristic_subcategory" +
-                "         join type_feature on characteristic_subcategory.id_type_feature = type_feature.id " +
-                "where characteristic_subcategory.id_sub_category = " + idSubcategory;
+        String sql = "select id_type_feature as id, name_type_feature as name, " +
+                "id_unit_measurement as unitMeasurement, " +
+                "id_data_type as dataType " +
+                "from get_all_type_feature_subcategory(" + idSubcategory + ")";
 
         ResultSetExtractor<List<TypeFeature>> mapper = JdbcTemplateMapperFactory
                 .newInstance()
@@ -62,11 +59,8 @@ public class CharacteristicRepositoryImpl extends BaseJDBCTemplateRepository<Cha
     public List<CharacteristicProductDTO> getAllTypeFeatureByProductCode(
             String codeProduct
     ) {
-        String sql = "select type_feature.name as name," +
-                "characteristic.value as value " +
-                "from characteristic " +
-                "join type_feature on characteristic.id_type_feature = type_feature.id " +
-                "where characteristic.id_product = " + "'" + codeProduct + "'";
+        String sql = "select name_type_feature as name, value_characteristic as value " +
+                "from get_all_type_feature_product_code(" + Utils.wrapUUID(codeProduct) + ")";
         ResultSetExtractor<List<CharacteristicProductDTO>> mapper = JdbcTemplateMapperFactory
                 .newInstance()
                 .newResultSetExtractor(CharacteristicProductDTO.class);
@@ -77,11 +71,8 @@ public class CharacteristicRepositoryImpl extends BaseJDBCTemplateRepository<Cha
     public List<CharacteristicDTO> getAllTypeFeatureWithIDByProductCode(
             String codeProduct
     ) {
-        String sql = "select type_feature.id as id," +
-                "characteristic.value as value " +
-                "from characteristic " +
-                "join type_feature on characteristic.id_type_feature = type_feature.id " +
-                "where characteristic.id_product = " + "'" + codeProduct + "'";
+        String sql = "select id_type_feature as id, value_characteristic as value " +
+                "from get_all_type_feature_by_id_product_code(" + Utils.wrapUUID(codeProduct) + ")";
         ResultSetExtractor<List<CharacteristicDTO>> mapper = JdbcTemplateMapperFactory
                 .newInstance()
                 .newResultSetExtractor(CharacteristicDTO.class);
@@ -90,9 +81,8 @@ public class CharacteristicRepositoryImpl extends BaseJDBCTemplateRepository<Cha
 
     @Override
     public List<ReferenceValueForArrayDTO> getAllReferenceValueByTypeFeature(int typeFeature) {
-        String sql = "select reference_value.name_value as value, reference_value.id as id " +
-                " from reference_value " +
-                "where id_type_feature = " + typeFeature;
+        String sql = "select name_value_ref_val as value, id_referemce_value as id " +
+                " from get_all_reference_value_by_type_feature(" + typeFeature + ")";
 
         ResultSetExtractor<List<ReferenceValueForArrayDTO>> mapper = JdbcTemplateMapperFactory
                 .newInstance()
@@ -103,10 +93,8 @@ public class CharacteristicRepositoryImpl extends BaseJDBCTemplateRepository<Cha
 
     @Override
     public ReferenceValueDTO getNameTypeFeature(int typeFeature) {
-        String sql = "select type_feature.id as id, " +
-                "type_feature.name as name " +
-                "from type_feature " +
-                "where id = " + typeFeature;
+        String sql = "select id_type_feature as id , name_type_feature as name " +
+                "from get_name_type_feature(" + typeFeature + ")";
         RowMapper<ReferenceValueDTO> mapper = JdbcTemplateMapperFactory.newInstance().newRowMapper(ReferenceValueDTO.class);
         List<ReferenceValueDTO> referenceValues = jdbcTemplate.query(sql, mapper);
         return referenceValues.get(0);
@@ -122,14 +110,14 @@ public class CharacteristicRepositoryImpl extends BaseJDBCTemplateRepository<Cha
                 .toList();
 
         if (!insertValues.isEmpty()) {
-            String sqlInsert = "insert into characteristic values " + String.join(",", insertValues);
+            String sqlInsert = "insert into characteristic_view values " + String.join(",", insertValues);
             jdbcTemplate.execute(sqlInsert);
         }
 
         List<String> replaceValues = characteristicDTOS.stream()
                 .filter(x -> x.getOperation().equals("replace"))
-                .map(element -> "UPDATE characteristic " +
-                        "SET value = " + Utils.wrapUUID(element.getValue())  +
+                .map(element -> "UPDATE characteristic_view " +
+                        "SET value = " + Utils.wrapUUID(element.getValue()) +
                         " WHERE id_type_feature = " + element.getId() + " AND id_product = '" + codeProduct + "'")
                 .toList();
 
@@ -144,15 +132,16 @@ public class CharacteristicRepositoryImpl extends BaseJDBCTemplateRepository<Cha
                 .toList();
 
         if (!removeValues.isEmpty()) {
-            String sqlRemove = "DELETE FROM characteristic " +
-                    "WHERE id_product = '" + codeProduct + "'" + " AND id_type_feature IN ( " + String.join(", ", removeValues) + ")";
+            String sqlRemove = "delete from characteristic_view " +
+                    "where id_product = '" + codeProduct + "'" + " and id_type_feature in ( " + String.join(", ", removeValues) + ")";
             jdbcTemplate.execute(sqlRemove);
         }
     }
 
     @Override
     public String getValueReferenceType(String codeReferenceType) {
-        String sql = "select name_value as value from reference_value where id = " + codeReferenceType;
+        String sql = "select value_ref_name as value " +
+                "from get_value_reference_type(" + codeReferenceType + ")";
         RowMapper<ReferenceValueForArrayDTO> mapper = JdbcTemplateMapperFactory.newInstance().newRowMapper(ReferenceValueForArrayDTO.class);
         List<ReferenceValueForArrayDTO> referenceValues = jdbcTemplate.query(sql, mapper);
         return referenceValues.get(0).getValue();

@@ -18,7 +18,7 @@ public class ManufacturerRepositoryImpl extends BaseJDBCTemplateRepository<Manuf
 
     @Override
     public List<Manufacturer> getAllManufacturer() {
-        String sql = " select id, name as value from manufacturer";
+        String sql = " select id_manufacturer as id, name_manufacturer as value from get_all_manufacturer()";
 
         ResultSetExtractor<List<Manufacturer>> mapper = JdbcTemplateMapperFactory
                 .newInstance()

@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 import ru.cursach.internetstorebackend.domain.dto.analytical.AnalyticPriceDTO;
 import ru.cursach.internetstorebackend.domain.dto.analytical.AnalyticTimeDTO;
-import ru.cursach.internetstorebackend.domain.dto.analytical.AnalyticUuidDTO;
 import ru.cursach.internetstorebackend.domain.dto.analytical.AnalyticalValueDTO;
 import ru.cursach.internetstorebackend.domain.entity.Product;
 import ru.cursach.internetstorebackend.repository.BaseJDBCTemplateRepository;
@@ -25,7 +24,7 @@ public class AnalyticalRepositoryImpl extends BaseJDBCTemplateRepository<Product
     public List<AnalyticalValueDTO> getCountMostFrequentlySelectedCourierCompanies(String dateStart, String dateEnd) {
         String sql = "select courier_company_name as name, count_courier_company as value" +
                 " from get_count_most_frequently_selected_courier_companies('"
-                + dateStart + "', '" + dateEnd + "'" + ");";
+                + dateStart + "', '" + dateEnd + "'" + ")";
 
         ResultSetExtractor<List<AnalyticalValueDTO>> mapper = JdbcTemplateMapperFactory
                 .newInstance()
@@ -57,8 +56,9 @@ public class AnalyticalRepositoryImpl extends BaseJDBCTemplateRepository<Product
         return jdbcTemplate.query(sql, mapper);
     }
 
-    public List<AnalyticTimeDTO> getSupplierPerformanceAnalysis() {
-        String sql = "select supplier_name as name, round(time_shipment) as avgDate from supplier_performance_analysis()";
+    public List<AnalyticTimeDTO> getSupplierPerformanceAnalysis(String dateStart, String dateEnd) {
+        String sql = "select supplier_name as name, round(time_shipment) as avgDate " +
+                "from supplier_performance_analysis('" + dateStart + "', '" + dateEnd + "')";
 
         ResultSetExtractor<List<AnalyticTimeDTO>> mapper = JdbcTemplateMapperFactory
                 .newInstance()
@@ -67,13 +67,43 @@ public class AnalyticalRepositoryImpl extends BaseJDBCTemplateRepository<Product
     }
 
     @Override
-    public List<AnalyticUuidDTO> getCountProcessedOrders(String dateStart, String dateEnd) {
-        String sql = "select id_warehouse as name, count_processed_orders as avgDate " +
+    public List<AnalyticalValueDTO> getCountProcessedOrders(String dateStart, String dateEnd) {
+        String sql = "select address_warehouse as name, count_processed_orders as value " +
                 "from get_count_processed_orders('" + dateStart + "', '" + dateEnd + "')";
 
-        ResultSetExtractor<List<AnalyticUuidDTO>> mapper = JdbcTemplateMapperFactory
+        ResultSetExtractor<List<AnalyticalValueDTO>> mapper = JdbcTemplateMapperFactory
                 .newInstance()
-                .newResultSetExtractor(AnalyticUuidDTO.class);
+                .newResultSetExtractor(AnalyticalValueDTO.class);
+        return jdbcTemplate.query(sql, mapper);
+    }
+
+    @Override
+    public List<AnalyticalValueDTO> getTopCategories(String dateStart, String dateEnd) {
+        String sql = "select subcategory_title as name, count_in_orders as value from get_top_category_by_period('" + dateStart + "', '" + dateEnd + "')";
+
+        ResultSetExtractor<List<AnalyticalValueDTO>> mapper = JdbcTemplateMapperFactory
+                .newInstance()
+                .newResultSetExtractor(AnalyticalValueDTO.class);
+        return jdbcTemplate.query(sql, mapper);
+    }
+
+    @Override
+    public List<AnalyticalValueDTO> getTopProducts(String dateStart, String dateEnd) {
+        String sql = "select product_title as name, quantity_in_orders as value from get_top_products_by_period('" + dateStart + "', '" + dateEnd + "')";
+
+        ResultSetExtractor<List<AnalyticalValueDTO>> mapper = JdbcTemplateMapperFactory
+                .newInstance()
+                .newResultSetExtractor(AnalyticalValueDTO.class);
+        return jdbcTemplate.query(sql, mapper);
+    }
+
+    @Override
+    public List<AnalyticalValueDTO> getRaitingManufacturers() {
+        String sql = "select manufacturer_name as name, avg_rating as value from get_rating_manufacturers()";
+
+        ResultSetExtractor<List<AnalyticalValueDTO>> mapper = JdbcTemplateMapperFactory
+                .newInstance()
+                .newResultSetExtractor(AnalyticalValueDTO.class);
         return jdbcTemplate.query(sql, mapper);
     }
 }

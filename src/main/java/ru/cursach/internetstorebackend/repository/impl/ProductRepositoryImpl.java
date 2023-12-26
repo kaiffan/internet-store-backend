@@ -14,6 +14,7 @@ import ru.cursach.internetstorebackend.repository.interfaces.ProductRepository;
 import ru.cursach.internetstorebackend.utils.Utils;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> implements ProductRepository {
@@ -105,14 +106,13 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
         String updateDimensionsSql = "call update_dimensions_for_product(?, ?, ?, ?, ?)";
 
         jdbcTemplate.update(updateProductSql,
-                Utils.wrapUUID(codeProduct),
+                UUID.fromString(codeProduct),
                 product.getName(),
                 product.getDescription(),
                 product.getModel(),
                 product.getImage(),
                 product.getCode_manufacturer(),
                 product.getWarranty(),
-                product.getRaiting(),
                 product.getIdCountry(),
                 product.getIdManufacturer());
 

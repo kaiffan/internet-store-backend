@@ -44,7 +44,7 @@ public class AnalyticalQueriesController {
     }
 
     @GetMapping("/supplier_performance_analysis")
-    public List<AnalyticTimeDTO> getSupplierPerformanceAnalysis(
+    public List<AnalyticalValueDTO> getSupplierPerformanceAnalysis(
             @RequestParam String dateStart,
             @RequestParam String dateEnd
     ) {

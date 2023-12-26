@@ -56,13 +56,13 @@ public class AnalyticalRepositoryImpl extends BaseJDBCTemplateRepository<Product
         return jdbcTemplate.query(sql, mapper);
     }
 
-    public List<AnalyticTimeDTO> getSupplierPerformanceAnalysis(String dateStart, String dateEnd) {
-        String sql = "select supplier_name as name, round(time_shipment) as avgDate " +
+    public List<AnalyticalValueDTO> getSupplierPerformanceAnalysis(String dateStart, String dateEnd) {
+        String sql = "select supplier_name as name, round(time_shipment) as value " +
                 "from supplier_performance_analysis('" + dateStart + "', '" + dateEnd + "')";
 
-        ResultSetExtractor<List<AnalyticTimeDTO>> mapper = JdbcTemplateMapperFactory
+        ResultSetExtractor<List<AnalyticalValueDTO>> mapper = JdbcTemplateMapperFactory
                 .newInstance()
-                .newResultSetExtractor(AnalyticTimeDTO.class);
+                .newResultSetExtractor(AnalyticalValueDTO.class);
         return jdbcTemplate.query(sql, mapper);
     }
 

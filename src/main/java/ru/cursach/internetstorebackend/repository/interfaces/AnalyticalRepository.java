@@ -10,7 +10,7 @@ public interface AnalyticalRepository {
     List<AnalyticalValueDTO> getCountMostFrequentlySelectedCourierCompanies(String dateStart, String dateEnd);
     List<AnalyticPriceDTO> getPricesForProduct(String dateStart, String dateEnd, String codeProduct);
     List<AnalyticalValueDTO> getSalesReportRegions(String dateStart, String dateEnd);
-    List<AnalyticTimeDTO> getSupplierPerformanceAnalysis(String dateStart, String dateEnd);
+    List<AnalyticalValueDTO> getSupplierPerformanceAnalysis(String dateStart, String dateEnd);
     List<AnalyticalValueDTO> getCountProcessedOrders(String dateStart, String dateEnd);
     List<AnalyticalValueDTO> getTopCategories(String dateStart, String dateEnd);
     List<AnalyticalValueDTO> getTopProducts(String dateStart, String dateEnd);

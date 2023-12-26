@@ -28,7 +28,7 @@ public class AnalyticalService {
         return analyticalRepository.getSalesReportRegions(dateStart, dateEnd);
     }
 
-    public List<AnalyticTimeDTO> getSupplierPerformanceAnalysis(String dateStart, String dateEnd) {
+    public List<AnalyticalValueDTO> getSupplierPerformanceAnalysis(String dateStart, String dateEnd) {
         return analyticalRepository.getSupplierPerformanceAnalysis(dateStart, dateEnd);
     }
 

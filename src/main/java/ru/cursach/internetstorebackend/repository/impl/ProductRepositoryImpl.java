@@ -96,7 +96,7 @@ public class ProductRepositoryImpl extends BaseJDBCTemplateRepository<Product> i
     @Override
     public int deleteProductByCodeProduct(String codeProduct) {
         String sql = "call delete_product(?)";
-        return jdbcTemplate.update(sql, Utils.wrapUUID(codeProduct));
+        return jdbcTemplate.update(sql, UUID.fromString(codeProduct));
     }
 
     @Override
